@@ -8,15 +8,25 @@ const baseConfig = {
     entry: path.resolve(__dirname, './src/index.js'),
     mode: 'development',
     module: {
-        rules: [
-            {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader'],
+    rules: [
+        {
+            test: /\.ts$/,
+            exclude: /node_modules/,
+            use: {
+                loader: 'ts-loader',
+                options: {
+                    transpileOnly: true,
+                },
             },
-        ],
-    },
+        },
+        {
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+        },
+    ],
+},
     resolve: {
-        extensions: ['.js'],
+        extensions: ['.ts', '.js'],
     },
     output: {
         filename: 'index.js',
