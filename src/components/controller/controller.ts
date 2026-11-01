@@ -1,14 +1,9 @@
 import AppLoader from './appLoader';
-import { INewsResponse, ISourcesResponse } from '../types/newsApi';
+import { Endpoint, INewsResponse, ISourcesResponse } from '../types/newsApi';
 
 class AppController extends AppLoader {
     public getSources(callback: (data: ISourcesResponse) => void): void {
-        super.getResp(
-            {
-                endpoint: 'sources',
-            },
-            callback
-        );
+        super.getResp<ISourcesResponse>({ endpoint: Endpoint.Sources }, callback);
     }
 
     public getNews(e: MouseEvent, callback: (data: INewsResponse) => void): void {
@@ -35,13 +30,8 @@ class AppController extends AppLoader {
                     newsContainer.querySelector(`.${ACTIVE_SOURCE_CLASS}`)?.classList.remove(ACTIVE_SOURCE_CLASS);
                     target.classList.add(ACTIVE_SOURCE_CLASS);
 
-                    super.getResp(
-                        {
-                            endpoint: 'everything',
-                            options: {
-                                sources: sourceId,
-                            },
-                        },
+                    super.getResp<INewsResponse>(
+                        { endpoint: Endpoint.Everything, options: { sources: sourceId } },
                         callback
                     );
                 }

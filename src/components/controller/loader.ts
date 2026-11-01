@@ -1,12 +1,21 @@
+import { Endpoint, HttpStatus } from '../types/newsApi';
+
 export type HttpMethod = 'GET' | 'POST';
 
-export interface IRequestOptions {
-    [key: string]: string | number | boolean | undefined;
+export interface IApiOptions {
+    apiKey: string;
 }
 
+export interface IQueryOptions {
+    sources: string;
+}
+
+export type LoaderOptions = Readonly<IApiOptions>;
+export type RequestOptions = Partial<IQueryOptions>;
+
 export interface IRequestConfig {
-    endpoint: string;
-    options?: Partial<IRequestOptions>;
+    endpoint: Endpoint;
+    options?: RequestOptions;
 }
 
 export type ResponseCallback<T> = (data: T) => void;
@@ -14,16 +23,16 @@ export type ResponseCallback<T> = (data: T) => void;
 class Loader {
     private readonly baseLink: string;
 
-    private readonly options: Readonly<IRequestOptions>;
+    private readonly options: LoaderOptions;
 
-    constructor(baseLink: string, options: IRequestOptions) {
+    constructor(baseLink: string, options: LoaderOptions) {
         this.baseLink = baseLink;
         this.options = options;
     }
 
     public getResp<T>(
         { endpoint, options = {} }: IRequestConfig,
-        callback: ResponseCallback<T> = () => {
+        callback: ResponseCallback<T> = (): void => {
             console.error('No callback for GET response');
         }
     ): void {
@@ -32,7 +41,7 @@ class Loader {
 
     private errorHandler(res: Response): Response {
         if (!res.ok) {
-            if (res.status === 401 || res.status === 404) {
+            if (res.status === HttpStatus.Unauthorized || res.status === HttpStatus.NotFound) {
                 console.error(`Sorry, but there is ${res.status} error: ${res.statusText}`);
             }
 
@@ -42,13 +51,13 @@ class Loader {
         return res;
     }
 
-    private makeUrl(options: Partial<IRequestOptions>, endpoint: string): string {
+    private makeUrl(options: RequestOptions, endpoint: Endpoint): string {
         const url = new URL(endpoint, this.baseLink);
         const urlOptions = { ...this.options, ...options };
 
         Object.entries(urlOptions).forEach(([key, value]) => {
             if (value !== undefined) {
-                url.searchParams.set(key, String(value));
+                url.searchParams.set(key, value);
             }
         });
 
@@ -57,9 +66,9 @@ class Loader {
 
     private load<T>(
         method: HttpMethod,
-        endpoint: string,
+        endpoint: Endpoint,
         callback: ResponseCallback<T>,
-        options: Partial<IRequestOptions> = {}
+        options: RequestOptions = {}
     ): void {
         fetch(this.makeUrl(options, endpoint), { method })
             .then((res) => this.errorHandler(res))

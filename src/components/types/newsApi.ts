@@ -27,6 +27,16 @@ export enum NewsApiStatus {
     ERROR = 'error',
 }
 
+export enum Endpoint {
+    Sources = 'sources',
+    Everything = 'everything',
+}
+
+export enum HttpStatus {
+    Unauthorized = 401,
+    NotFound = 404,
+}
+
 export interface INewsResponse {
     status: NewsApiStatus;
     totalResults: number;
