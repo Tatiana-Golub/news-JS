@@ -26,6 +26,12 @@
     flex: 0 0 auto;
 }
 
+.source__item--active {
+    border-color: #3fcc59;
+    color: #69db7e;
+    background: rgba(63, 204, 89, 0.12);
+}
+
 .source__item:hover,
 .source__item:focus {
     border-color: #3fcc59;

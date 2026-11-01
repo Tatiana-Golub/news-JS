@@ -13,6 +13,7 @@ class AppController extends AppLoader {
 
     public getNews(e: MouseEvent, callback: (data: INewsResponse) => void): void {
         const newsContainer = e.currentTarget;
+        const ACTIVE_SOURCE_CLASS = 'source__item--active';
 
         if (!(newsContainer instanceof HTMLElement)) {
             return;
@@ -30,6 +31,9 @@ class AppController extends AppLoader {
 
                 if (sourceId && newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
+
+                    newsContainer.querySelector(`.${ACTIVE_SOURCE_CLASS}`)?.classList.remove(ACTIVE_SOURCE_CLASS);
+                    target.classList.add(ACTIVE_SOURCE_CLASS);
 
                     super.getResp(
                         {
