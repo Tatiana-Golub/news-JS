@@ -1,6 +1,13 @@
 import './news.css';
 import { INewsArticle } from '../../types/newsApi';
 
+export type NewsMessageKind = 'empty' | 'loading';
+
+const MESSAGES: Readonly<Record<NewsMessageKind, string>> = {
+    empty: 'No articles found for this source. Try another one.',
+    loading: 'Loading news…',
+};
+
 function getElement<T extends Element>(parent: ParentNode, selector: string): T {
     const element = parent.querySelector<T>(selector);
 
@@ -13,6 +20,13 @@ function getElement<T extends Element>(parent: ParentNode, selector: string): T 
 
 class News {
     public draw(data: INewsArticle[]): void {
+        const newsContainer = getElement<HTMLElement>(document, '.news');
+
+        if (data.length === 0) {
+            this.showMessage('empty');
+            return;
+        }
+
         const news = data.slice(0, 10);
 
         const fragment = document.createDocumentFragment();
@@ -25,9 +39,8 @@ class News {
                 getElement<HTMLElement>(newsClone, '.news__item').classList.add('alt');
             }
 
-            getElement<HTMLElement>(newsClone, '.news__meta-photo').style.backgroundImage = `url(${
-                item.urlToImage || 'img/news-placeholder.jpg'
-            })`;
+            getElement<HTMLElement>(newsClone, '.news__meta-photo').style.backgroundImage =
+                `url(${item.urlToImage || 'img/news-placeholder.jpg'})`;
 
             getElement<HTMLElement>(newsClone, '.news__meta-author').textContent = item.author || item.source.name;
 
@@ -45,9 +58,18 @@ class News {
             fragment.append(newsClone);
         });
 
-        const newsContainer = getElement<HTMLElement>(document, '.news');
         newsContainer.innerHTML = '';
         newsContainer.appendChild(fragment);
+    }
+
+    public showMessage(kind: NewsMessageKind): void {
+        const newsContainer = getElement<HTMLElement>(document, '.news');
+        const message = document.createElement('p');
+
+        message.className = `news__message news__message--${kind}`;
+        message.textContent = MESSAGES[kind];
+
+        newsContainer.replaceChildren(message);
     }
 }
 

@@ -18,6 +18,10 @@ export class AppView {
     public drawSources(data: ISourcesResponse): void {
         this.sources.draw(data.sources);
     }
+
+    public showNewsLoading(): void {
+        this.news.showMessage('loading');
+    }
 }
 
 export default AppView;
