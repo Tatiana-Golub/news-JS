@@ -47,3 +47,7 @@ export interface ISourcesResponse {
     status: NewsApiStatus;
     sources: INewsSource[];
 }
+
+export type SourceItem = Pick<INewsSource, 'id' | 'name'>;
+
+export type NewsItem = Readonly<INewsArticle>;

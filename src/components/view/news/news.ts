@@ -1,5 +1,5 @@
 import './news.css';
-import { INewsArticle } from '../../types/newsApi';
+import { NewsItem } from '../../types/newsApi';
 
 export type NewsMessageKind = 'empty' | 'loading';
 
@@ -19,7 +19,7 @@ function getElement<T extends Element>(parent: ParentNode, selector: string): T 
 }
 
 class News {
-    public draw(data: INewsArticle[]): void {
+    public draw(data: readonly NewsItem[]): void {
         const newsContainer = getElement<HTMLElement>(document, '.news');
 
         if (data.length === 0) {
