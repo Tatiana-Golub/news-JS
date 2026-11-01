@@ -3,28 +3,29 @@ const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const DotenvWebpackPlugin = require('dotenv-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const baseConfig = {
     entry: path.resolve(__dirname, './src/index.ts'),
     mode: 'development',
     module: {
-    rules: [
-        {
-            test: /\.ts$/,
-            exclude: /node_modules/,
-            use: {
-                loader: 'ts-loader',
-                options: {
-                    transpileOnly: true,
+        rules: [
+            {
+                test: /\.ts$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        transpileOnly: true,
+                    },
                 },
             },
-        },
-        {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
-        },
-    ],
-},
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader'],
+            },
+        ],
+    },
     resolve: {
         extensions: ['.ts', '.js'],
     },
@@ -37,6 +38,9 @@ const baseConfig = {
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, './src/index.html'),
             filename: 'index.html',
+        }),
+        new CopyWebpackPlugin({
+            patterns: [{ from: path.resolve(__dirname, './src/img'), to: 'img' }],
         }),
         new CleanWebpackPlugin(),
     ],

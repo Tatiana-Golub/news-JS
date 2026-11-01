@@ -26,7 +26,7 @@ class News {
             }
 
             getElement<HTMLElement>(newsClone, '.news__meta-photo').style.backgroundImage = `url(${
-                item.urlToImage || 'img/news_placeholder.jpg'
+                item.urlToImage || 'img/news-placeholder.jpg'
             })`;
 
             getElement<HTMLElement>(newsClone, '.news__meta-author').textContent = item.author || item.source.name;
