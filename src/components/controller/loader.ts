@@ -26,7 +26,7 @@ class Loader {
     private readonly options: LoaderOptions;
 
     constructor(baseLink: string, options: LoaderOptions) {
-        this.baseLink = baseLink;
+        this.baseLink = baseLink.endsWith('/') ? baseLink : `${baseLink}/`;
         this.options = options;
     }
 
@@ -56,7 +56,7 @@ class Loader {
         const urlOptions = { ...this.options, ...options };
 
         Object.entries(urlOptions).forEach(([key, value]) => {
-            if (value !== undefined) {
+            if (value !== undefined && value !== '') {
                 url.searchParams.set(key, value);
             }
         });
