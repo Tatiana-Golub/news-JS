@@ -1,35 +1,86 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --page-gutter: clamp(0.75rem, 3vw, 2rem);
+}
+
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+    margin: 20px;
     color: #fff;
     background: #17181c;
     font-family: sans-serif;
 }
 
 header {
-    padding: 10px 30px;
+    padding: 0.5rem var(--page-gutter);
 }
 
 header h1 {
-    font-size: 40px;
+    margin: 0.5rem 0;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
     font-weight: 800;
+    text-align: center;
 }
 
 footer {
-    height: 100px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    gap: 0.75rem 2rem;
+    min-height: 100px;
+    padding: 1rem var(--page-gutter);
 }
-footer .copyright {
+
+footer p {
+    margin: 0;
     font-size: 14px;
-    color: #333;
+    color: #8a8f9c;
     text-align: center;
 }
-footer .copyright a {
-    color: #444;
+
+footer p a {
+    color: #a3a8b5;
 }
-footer .copyright a:hover {
-    color: #555;
+
+footer p a:hover,
+footer p a:focus-visible {
+    color: #fff;
 }
+
 footer .copyright:before {
     content: '©';
+    margin-right: 0.25em;
+}
+
+.footer-link {
+    display: inline-flex;
+    border-radius: 50%;
+    transition: transform 0.25s;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible {
+    transform: scale(1.1);
+}
+
+.school-logo {
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+@media (max-width: 480px) {
+    footer {
+        flex-direction: column;
+    }
 }
